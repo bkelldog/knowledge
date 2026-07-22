@@ -39,6 +39,8 @@ https://bradwoods.io/
 
 [Orhex0](https://www.orhex0.com/)
 
+[Yana Zuray](https://yanazuray.me)
+
 ## Art
 [The Index of Medieval Art](https://theindex.princeton.edu/)
 
@@ -49,6 +51,8 @@ https://bradwoods.io/
 [Isometric NYC](https://cannoneyed.com/isometric-nyc/)
 
 [San Francisco Graffiti](https://walzr.com/sf-graffiti)
+
+[Zarb World](https://zarbworld.net/index.html)
 ## Directories
 [LoadMore - Site Archive](https://loadmo.re/)
 
@@ -56,40 +60,32 @@ https://bradwoods.io/
 
 [Whole Earth Index](https://wholeearth.info/) and the [Searchable Whole Earth](https://searchwhole.earth)
 
+## Projects
+- [The Skyline Project](https://the-skyline-project.vercel.app/)
 ## Blogs
-### Hardware, Electronics, Reverse Engineering
-[Ken Shirrif's Blog - Computer history, restoring vintage computers, IC reverse engineering, and whatever](https://www.righto.com/)
-
-[The Magic Smoke - Electronics Engineering, one stop for Microcontrollers, Analog, Digital Electronics](https://themagicsmoke1.wordpress.com/)
-
-[reverse.put.as - Reverse engineering and security for fun since 2007](https://reverse.put.as/)
-
-[Didier Stevens' Blog](https://blog.didierstevens.com/)
-
-[Evan Applegate - The Map Guy](https://evanapplegate.com/)
-
-[wavefnx.com](https://wavefnx.com/)
-
-### Software
-https://meyerweb.com
-
-[Federico Magnani's Blog - Rust, Computational Mathematics, Finance and other stuff.](https://fedemagnani.github.io/)
-
-[patrickogrady.xyz](https://patrickogrady.xyz/)
-## Mathematics
-[Convergent Thinking](https://convergentthinking.sh/)
-
-[Window Function - Figure of Merits](https://www.gaussianwaves.com/2020/09/window-function-figure-of-merits/)
-
-[ickma.dev - Notes on Deep Learning and Math](https://ickma2311.github.io/)
-
-## Physics
-[Zero Point Field Blog](https://www.zero-pointfieldtechnologies.com/blog)
-## Decentralization
-[Sovereign Engineering](https://sovereignengineering.io/)
-
-### Long Posts
-[Just Fucking Use HTML](https://justfuckingusehtml.com/)
-
-## Productivity
-[Farnam Street](https://fs.blog/)
+- Hardware, Electronics, Reverse-Engineering
+	- [Ken Shirrif's Blog - Computer history, restoring vintage computers, IC reverse engineering, and whatever](https://www.righto.com/)
+	- [The Magic Smoke - Electronics Engineering, one stop for Microcontrollers, Analog, Digital Electronics](https://themagicsmoke1.wordpress.com/)
+	- [reverse.put.as - Reverse engineering and security for fun since 2007](https://reverse.put.as/)
+	- [Didier Stevens' Blog](https://blog.didierstevens.com/)
+	- [Evan Applegate - The Map Guy](https://evanapplegate.com/)
+	- [wavefnx.com](https://wavefnx.com/)
+	- [Colonel Panic](https://colonelpanic.tech)
+	- [A Circle of Hope Hacker's Conferenec 2018](https://xii.hope.net/)
+- Software
+	- https://meyerweb.com
+	- [Federico Magnani's Blog - Rust, Computational Mathematics, Finance and other stuff.](https://fedemagnani.github.io/)
+	- [patrickogrady.xyz](https://patrickogrady.xyz/)
+	- [Just Fucking Use HTML](https://justfuckingusehtml.com/)
+- Mathematics
+	- [Convergent Thinking](https://convergentthinking.sh/)
+	- [Window Function - Figure of Merits](https://www.gaussianwaves.com/2020/09/window-function-figure-of-merits/)
+	- [ickma.dev - Notes on Deep Learning and Math](https://ickma2311.github.io/)
+- Physics
+	- [Zero Point Field Blog](https://www.zero-pointfieldtechnologies.com/blog)
+- Decentralization
+	- [Sovereign Engineering](https://sovereignengineering.io/)
+- Productivity
+	- [Farnam Street](https://fs.blog/)
+- Language
+	- https://nikhilsd.com/

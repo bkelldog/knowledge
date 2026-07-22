@@ -1,0 +1,2 @@
+# Definition
+The frequency domain is a set of real numbers where every number represents the frequency of some periodic sinusoid wave. It is often used as the independent variable axis (x-axis) on a 2D plane alongside an axis of wave amplitude or phase (y-axis) to represent a wave or signal. A signal that exists in the time domain can be translated into the frequency domain using the [[The Fourier Transform|Fourier Transform]].
