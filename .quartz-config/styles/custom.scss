@@ -1,20 +1,10 @@
 @use "sass:string";
 @use "./variables.scss" as *;
 
-// Your stylesheet. It is appended after all of Quartz's CSS, and everything
-// else (base styles + every plugin's styles) lives inside `@layer quartz-base`.
-// Unlayered rules always beat layered ones, so a rule here wins regardless of
-// selector specificity. No !important needed.
-//
-// Colours live in quartz.config.yaml (theme.colors) and reach this file as
-// --light, --lightgray, --gray, --darkgray, --dark, --secondary, --tertiary,
-// --highlight, --textHighlight. Dark mode swaps them via :root[saved-theme="dark"].
-//
-// Run `node .quartz-config/dev.mjs` to preview changes locally with live reload.
+// This stylesheet is appended after all of Quartz's CSS, and everything
+// else (base styles + every plugin's styles) resides in `@layer quartz-base`.
 
-// ── Homepage aesthetic (willkelly.dev) ──────────────────────────────────────
-// Paper, Palatino, red type, hairline rules and a fleuron. Mirrors
-// HomePage/source/css/{global,notebook,footer}.css.
+// ── Homepage aesthetic from willkelly.dev ──────────────────────────────────────
 
 :root {
   --serif: "Palatino Linotype", Palatino, "Book Antiqua", "Crimson Pro", Georgia, serif;
@@ -41,7 +31,6 @@
 
 // ── Page frame ──────────────────────────────────────────────────────────────
 
-// A narrow, centred reading column like the homepage's article pages.
 .page > #quartz-body .center,
 .page > #quartz-body > footer {
   min-width: 0;
@@ -55,7 +44,6 @@
   font-size: 0.95rem;
 }
 
-// Site title: small caps in red, like the homepage footer links.
 .page-title {
   font-size: 1.35rem;
   font-weight: normal;
@@ -74,7 +62,6 @@
   }
 }
 
-// Sidebar section headings (Explorer, Graph View, Table of Contents).
 button.desktop-explorer h2,
 button.mobile-explorer h2,
 .graph > h3,
@@ -117,7 +104,7 @@ h3 {
   font-style: italic;
 }
 
-// Article title with the homepage's short rule beneath it.
+// Article title with a short rule beneath it.
 .page-header .article-title {
   font-size: 2.1rem;
   font-weight: normal;
@@ -138,13 +125,12 @@ strong,
   color: var(--dark);
 }
 
-// Emphasis is rubricated (red, upright), as in the homepage notebook.
+// Emphasis is rubricated, i.e. red and upright.
 article em {
   color: var(--secondary);
   font-style: normal;
 }
 
-// Links: red type, no background pill, underline on hover.
 a,
 a.internal {
   font-weight: normal;
@@ -166,14 +152,12 @@ a.external .external-icon > path {
   fill: var(--gray);
 }
 
-// Heading anchor links stay quiet.
 article > :is(h1, h2, h3, h4, h5, h6) > a[role="anchor"]:hover {
   text-decoration: none;
 }
 
-// En-dash bullets, as in the homepage notebook.
 article ul:not(.contains-task-list) {
-  list-style-type: string.unquote('"\\2013\\2002"'); // en dash + en space, kept ASCII
+  list-style-type: string.unquote('"\\2013\\2002"');
 }
 
 blockquote:not(.callout) {
@@ -192,7 +176,7 @@ hr {
   background-color: var(--hairline);
 }
 
-// The rule between the article and the footer becomes the homepage fleuron:
+// The rule between the article and the footer matches the homepage's fleuron:
 // ——— ⁂ ———
 .center > hr {
   height: 1.2em;
@@ -312,6 +296,16 @@ tr {
   border-radius: 0;
 }
 
+// Compact the graph view in the right column
+.graph > .graph-outer {
+  height: 170px;
+}
+
+.page > #quartz-body .sidebar.right .toc {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
 ul.toc-content.overflow > li > a {
   color: var(--darkgray);
 
@@ -329,12 +323,11 @@ ul.toc-content.overflow > li > a {
 
 // ── Custom components (.quartz-config/components/) ─────────────────────────
 
-// HomeLink: "← Home" above the site title.
 .home-link {
   align-self: flex-start;
-  margin-bottom: -0.6rem; // sit close to the title below
-  font-size: 0.85rem;
-  font-variant: small-caps;
+  margin-bottom: -0.4rem;
+  font-size: 0.9rem;
+  font-variant: all-small-caps;
   letter-spacing: 0.08em;
   white-space: nowrap;
 
@@ -342,7 +335,7 @@ ul.toc-content.overflow > li > a {
     text-decoration: none;
 
     span {
-      margin-right: 0.15em; // arrow nudges left
+      margin-right: 0.15em;
     }
   }
 
@@ -352,7 +345,6 @@ ul.toc-content.overflow > li > a {
     transition: margin 0.15s ease;
   }
 
-  // The left sidebar is a single row on phones; give the link its own line.
   @media #{$mobile} {
     flex-basis: 100%;
     margin-bottom: 0.5rem;

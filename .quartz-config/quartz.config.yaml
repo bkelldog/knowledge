@@ -19,7 +19,7 @@ configuration:
       header: "Crimson Pro"
       body: "Crimson Pro"
       code: "IBM Plex Mono"
-    # Ported from the homepage (HomePage/source/css/global.css):
+    # My custom colors from willkelly.dev home page:
     #   paper #fffbf6, off-black #3d3d3d, off-black-darker #222222,
     #   red-type #c8392b, ornament #b8a893
     colors:

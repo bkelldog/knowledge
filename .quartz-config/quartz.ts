@@ -1,7 +1,8 @@
 // Replaces Quartz's quartz.ts at build time (see .github/workflows and dev.mjs).
 //
-// Adds the custom components in .quartz-config/components/ to every page:
-// a home link above the site title, and the homepage-style footer.
+// Adds the custom components in .quartz-config/components/ to every page
+// (a home link above the site title, and the homepage-style footer), and
+// forces the titles of selected pages.
 //
 // Quartz builds the page layout from quartz.config.yaml inside loadQuartzConfig()
 // and hands it to its page dispatcher; the `layout` export below is not read
@@ -29,6 +30,11 @@ const siteFooter = SiteFooter({
   },
 })
 
+// Titles that always win over frontmatter and file names, keyed by page slug.
+const forcedTitles: Record<string, string> = {
+  index: "Knowledge Base",
+}
+
 // Page-type layouts only override the slots they define, so leave undefined
 // slots alone and let them fall back to the defaults.
 function addCustomComponents(layout: Partial<FullPageLayout>) {
@@ -37,6 +43,18 @@ function addCustomComponents(layout: Partial<FullPageLayout>) {
 }
 
 const config = await loadQuartzConfig()
+
+// Runs after note-properties, which sets the title from frontmatter or the file name.
+config.plugins.transformers.push({
+  name: "ForcedTitles",
+  markdownPlugins: () => [
+    () => (_tree, file) => {
+      const title = forcedTitles[file.data.slug ?? ""]
+      if (title) file.data.frontmatter = { ...file.data.frontmatter, title }
+    },
+  ],
+})
+
 export const layout = await loadQuartzLayout()
 addCustomComponents(layout.defaults)
 Object.values(layout.byPageType).forEach(addCustomComponents)
