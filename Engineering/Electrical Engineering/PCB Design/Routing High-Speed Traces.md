@@ -1,0 +1,1 @@
+Traces carrying high-frequency signals cannot be routed like any other low-speed or DC signal. Low-speed and DC signals travel conceptually according to the [[lumped element model]], while high-speed traces behave according to the [[distributed element model]].

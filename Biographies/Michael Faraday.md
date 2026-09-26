@@ -1,3 +1,4 @@
+![Portrait of Michael Faraday (1791-1867). Oil painting after Henry William Pickersgill (1782–1875).](https://thumb.wikimedia.org/wikipedia/commons/thumb/d/da/Michael_Faraday_%281791-1867%29.jpg/500px-Michael_Faraday_%281791-1867%29.jpg)
 
 # Electromagnetic Induction
 

@@ -1,0 +1,1 @@
+Capacitance is the ability of the electric field to store electrical energy; it is a fundamental feature of electricity. Sometimes capacitance in a circuit is intentional, when used in a [[The Capacitor|capacitor]], and sometimes unintentional, as in parasitic capacitance.

@@ -15,6 +15,8 @@
 # Dev
 - APIs
 	- [402.Markets - API Marketplace](https://402.markets/)
+- Auth
+	- [TinyAuth](https://tinyauth.app/)
 - Visualization
 	- [ChartDB](https://chartdb.io)
 	- [Deck.gl - Map Visualization](https://deck.gl/)

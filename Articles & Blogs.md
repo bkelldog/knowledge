@@ -1,0 +1,33 @@
+# Blogs
+- Hardware, Electronics, Reverse-Engineering
+	- [Ken Shirrif's Blog - Computer history, restoring vintage computers, IC reverse engineering, and whatever](https://www.righto.com/)
+	- [The Magic Smoke - Electronics Engineering, one stop for Microcontrollers, Analog, Digital Electronics](https://themagicsmoke1.wordpress.com/)
+	- [reverse.put.as - Reverse engineering and security for fun since 2007](https://reverse.put.as/)
+	- [Didier Stevens' Blog](https://blog.didierstevens.com/)
+	- [Evan Applegate - The Map Guy](https://evanapplegate.com/)
+	- [wavefnx.com](https://wavefnx.com/)
+	- [Colonel Panic](https://colonelpanic.tech)
+	- [A Circle of Hope Hacker's Conferenec 2018](https://xii.hope.net/)
+- Software
+	- https://meyerweb.com
+	- [Federico Magnani's Blog - Rust, Computational Mathematics, Finance and other stuff.](https://fedemagnani.github.io/)
+	- [patrickogrady.xyz](https://patrickogrady.xyz/)
+	- [Just Fucking Use HTML](https://justfuckingusehtml.com/)
+	- [Why Your Website Should Be Under 14kb in Size](https://endtimes.dev/why-your-website-should-be-under-14kb-in-size/)
+	- [Giving Claude a Brush: What Tools Actually Are](https://www.toolcallers.com/posts/what-is-a-tool) by [@kraxkrokat](https://x.com/Kraxkrokat)
+	- [Getting to Grips with DSP in FPGA, Part Two](https://www.adiuvoengineering.com/post/microzed-chronicles-getting-to-grips-with-dsp-in-fpga-part-two)
+- Mathematics
+	- [Convergent Thinking](https://convergentthinking.sh/)
+	- [Window Function - Figure of Merits](https://www.gaussianwaves.com/2020/09/window-function-figure-of-merits/)
+	- [ickma.dev - Notes on Deep Learning and Math](https://ickma2311.github.io/)
+- Physics
+	- [Zero Point Field Blog](https://www.zero-pointfieldtechnologies.com/blog)
+- Decentralization
+	- [Sovereign Engineering](https://sovereignengineering.io/)
+- Productivity
+	- [Farnam Street](https://fs.blog/)
+- Language
+	- https://nikhilsd.com/
+- Marketing
+	- [Resource: Landing Pages](https://www.julian.com/guide/startup/landing-pages) by Julian Shapiro
+	- [1,000 True Fans](https://kk.org/thetechnium/1000-true-fans/) by Kevin Kelly

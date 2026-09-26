@@ -36,7 +36,7 @@ $mobileGrid: (
       "grid-footer"',
 );
 $tabletGrid: (
-  templateRows: "auto auto auto 1fr", // spare height goes below the footer, not between rows
+  templateRows: "auto auto auto 1fr",
   templateColumns: "#{$sidePanelWidth} auto",
   rowGap: "5px",
   columnGap: "5px",
@@ -47,7 +47,7 @@ $tabletGrid: (
       "grid-sidebar-left grid-footer"',
 );
 $desktopGrid: (
-  templateRows: "auto auto 1fr", // spare height goes below the footer, not between rows
+  templateRows: "auto auto 1fr",
   templateColumns: "#{$sidePanelWidth} auto #{$sidePanelWidth}",
   rowGap: "5px",
   columnGap: "5px",

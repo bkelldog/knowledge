@@ -1,5 +1,5 @@
 # Definition
-The four Maxwell equations can be written in differential or integral form:
+The four Maxwell equations can be written in [[The Differential|differential]] or [[The Integral|integral]] form:
 $$
 \begin{aligned}
 \vec{\nabla}\cdot \vec{E} &= \frac{\rho}{\varepsilon_0} &&\text{(Gauss's Law)}\\[6pt]
@@ -56,7 +56,6 @@ $$
 \nabla\cdot\mathbf{J} + \frac{\partial \rho}{\partial t} = 0
 $$
 
-See [[The Integral]], [[The Differential]].
 # References
 1. [The Maxwell Equations - Part of the Feynman Lectures](https://www.feynmanlectures.caltech.edu/II_18.html)
 2. [The Maxwell Equations - U.S. Particle Accelerator School](https://uspas.fnal.gov/materials/18ODU/2L%20Maxwell's_Equations.pdf)

@@ -20,7 +20,7 @@ Or, to do it the long way,
 
 Or, to do it the long way,
 
-> Open CMD. Navigate to the desired folder using `cd`.
+> Open Terminal. Navigate to the desired folder using `cd`.
 > Run `git init`.
 > Run `git remote add origin <remote URL>`
 > Run `git fetch origin`

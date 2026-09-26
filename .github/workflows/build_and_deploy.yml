@@ -43,7 +43,6 @@ jobs:
       - name: Copy favicon
         run: curl -L -o _quartz/quartz/static/icon.png https://willkelly.dev/assets/favicon.png
 
-      # Keep these mappings in sync with OVERRIDES in .quartz-config/dev.mjs
       - name: Copy custom styles, components and static files
         run: |
           cp .quartz-config/quartz.ts _quartz/quartz.ts

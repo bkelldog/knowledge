@@ -13,12 +13,6 @@ configuration:
   theme:
     fontOrigin: googleFonts
     cdnCaching: true
-    # These slots only decide which Google fonts get loaded; styles/custom.scss
-    # decides where each is used. Browsers download a font only when it's used.
-    #   header: Noto Serif, for the site title (.page-title); 500 is for its
-    #           smaller letters. The `title` slot would load only the letters
-    #           of "Knowledge Base", so the full family is loaded here instead.
-    #   body:   Crimson Pro, fallback for devices without Palatino.
     typography:
       header:
         name: "Noto Serif"
