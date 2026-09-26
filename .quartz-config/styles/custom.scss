@@ -1,0 +1,402 @@
+@use "sass:string";
+@use "./variables.scss" as *;
+
+// Your stylesheet. It is appended after all of Quartz's CSS, and everything
+// else (base styles + every plugin's styles) lives inside `@layer quartz-base`.
+// Unlayered rules always beat layered ones, so a rule here wins regardless of
+// selector specificity. No !important needed.
+//
+// Colours live in quartz.config.yaml (theme.colors) and reach this file as
+// --light, --lightgray, --gray, --darkgray, --dark, --secondary, --tertiary,
+// --highlight, --textHighlight. Dark mode swaps them via :root[saved-theme="dark"].
+//
+// Run `node .quartz-config/dev.mjs` to preview changes locally with live reload.
+
+// ── Homepage aesthetic (willkelly.dev) ──────────────────────────────────────
+// Paper, Palatino, red type, hairline rules and a fleuron. Mirrors
+// HomePage/source/css/{global,notebook,footer}.css.
+
+:root {
+  --serif: "Palatino Linotype", Palatino, "Book Antiqua", "Crimson Pro", Georgia, serif;
+  --titleFont: var(--serif);
+  --headerFont: var(--serif);
+  --bodyFont: var(--serif);
+
+  --hairline: #d8c8b3;
+  --ornament: #b8a893;
+  --code-bg: #f2eee9;
+  --measure: 42rem;
+}
+
+:root[saved-theme="dark"] {
+  --hairline: #4a4239;
+  --ornament: #7a6f62;
+  --code-bg: #23201c;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--secondary) 18%, transparent);
+  color: inherit;
+}
+
+// ── Page frame ──────────────────────────────────────────────────────────────
+
+// A narrow, centred reading column like the homepage's article pages.
+.page > #quartz-body .center,
+.page > #quartz-body > footer {
+  min-width: 0;
+  width: 100%;
+  max-width: var(--measure);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.page > #quartz-body .sidebar {
+  font-size: 0.95rem;
+}
+
+// Site title: small caps in red, like the homepage footer links.
+.page-title {
+  font-size: 1.35rem;
+  font-weight: normal;
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  margin: 0;
+
+  a {
+    color: var(--secondary);
+    font-weight: normal;
+  }
+
+  @media #{$mobile} {
+    font-size: 1.15rem;
+    margin-right: 1rem;
+  }
+}
+
+// Sidebar section headings (Explorer, Graph View, Table of Contents).
+button.desktop-explorer h2,
+button.mobile-explorer h2,
+.graph > h3,
+button.toc-header h3 {
+  font-family: var(--headerFont);
+  font-size: 0.95rem;
+  font-weight: normal;
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  color: var(--gray);
+}
+
+// ── Typography ──────────────────────────────────────────────────────────────
+
+article {
+  font-size: 1.0625rem;
+
+  p,
+  li {
+    line-height: 1.65;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+  color: var(--dark);
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+  font-style: italic;
+}
+
+// Article title with the homepage's short rule beneath it.
+.page-header .article-title {
+  font-size: 2.1rem;
+  font-weight: normal;
+  margin-bottom: 0;
+}
+
+.page-header .popover-hint::after {
+  content: "";
+  display: block;
+  max-width: 40%;
+  margin: 1.25rem 0 1.75rem;
+  border-top: 1px solid var(--hairline);
+}
+
+strong,
+.page article p > strong {
+  font-weight: bold;
+  color: var(--dark);
+}
+
+// Emphasis is rubricated (red, upright), as in the homepage notebook.
+article em {
+  color: var(--secondary);
+  font-style: normal;
+}
+
+// Links: red type, no background pill, underline on hover.
+a,
+a.internal {
+  font-weight: normal;
+  color: var(--secondary);
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  transition: none;
+
+  &:hover {
+    color: var(--secondary);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    text-decoration-thickness: 1px;
+  }
+}
+
+a.external .external-icon > path {
+  fill: var(--gray);
+}
+
+// Heading anchor links stay quiet.
+article > :is(h1, h2, h3, h4, h5, h6) > a[role="anchor"]:hover {
+  text-decoration: none;
+}
+
+// En-dash bullets, as in the homepage notebook.
+article ul:not(.contains-task-list) {
+  list-style-type: string.unquote('"\\2013\\2002"'); // en dash + en space, kept ASCII
+}
+
+blockquote:not(.callout) {
+  border-left: 1px solid var(--hairline);
+  padding-left: 1.25rem;
+  font-style: italic;
+}
+
+.text-highlight {
+  border-radius: 2px;
+}
+
+// ── Rules and ornaments ─────────────────────────────────────────────────────
+
+hr {
+  background-color: var(--hairline);
+}
+
+// The rule between the article and the footer becomes the homepage fleuron:
+// ——— ⁂ ———
+.center > hr {
+  height: 1.2em;
+  margin: 4rem auto 2rem;
+  background: linear-gradient(var(--hairline), var(--hairline)) center / 100% 1px no-repeat;
+  text-align: center;
+  overflow: visible;
+
+  &::after {
+    content: string.unquote('"\\2042"'); // asterism, kept ASCII so Sass emits no @charset
+    padding: 0 1em;
+    background: var(--light);
+    color: var(--ornament);
+    font-family: var(--serif);
+    font-size: 1.1em;
+    line-height: 1.2em;
+  }
+}
+
+// ── Code ────────────────────────────────────────────────────────────────────
+
+pre {
+  border: none;
+  border-left: 1px solid var(--darkgray);
+  border-radius: 0;
+  background-color: var(--code-bg);
+}
+
+figure[data-rehype-pretty-code-figure] > [data-rehype-pretty-code-title] {
+  border-color: var(--hairline);
+  border-radius: 0;
+}
+
+code {
+  background: var(--code-bg);
+  border-radius: 2px;
+}
+
+// ── Media, tables, callouts ─────────────────────────────────────────────────
+
+article img {
+  display: block;
+  margin: 1.5rem auto;
+  border-radius: 0;
+}
+
+th {
+  font-weight: normal;
+  font-variant: small-caps;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--darkgray);
+}
+
+tr {
+  border-bottom-color: var(--hairline);
+}
+
+.callout {
+  border-radius: 0;
+}
+
+.popover > .popover-inner {
+  border-radius: 0;
+  border-color: var(--hairline);
+}
+
+// ── Sidebar components ──────────────────────────────────────────────────────
+
+.search > .search-button {
+  border-color: var(--hairline);
+  border-radius: 2px;
+
+  & > p {
+    font-style: italic;
+  }
+}
+
+.search > .search-container > .search-space > * {
+  border-radius: 2px;
+}
+
+.search .result-card:hover {
+  text-decoration: none;
+}
+
+.explorer-content .folder-outer > ul {
+  border-left-color: var(--hairline);
+}
+
+.folder-container div > button span,
+.folder-container div > a {
+  font-weight: normal;
+  color: var(--dark);
+}
+
+.folder-icon {
+  color: var(--gray);
+}
+
+.explorer-content ul li > a {
+  color: var(--darkgray);
+  opacity: 1;
+
+  &:hover {
+    color: var(--secondary);
+    text-decoration: none;
+  }
+
+  &.active {
+    color: var(--secondary);
+  }
+}
+
+.graph > .graph-outer,
+.graph > .global-graph-outer > .global-graph-container {
+  border-color: var(--hairline);
+  border-radius: 0;
+}
+
+ul.toc-content.overflow > li > a {
+  color: var(--darkgray);
+
+  &.in-view {
+    color: var(--dark);
+    opacity: 1;
+  }
+
+  &:hover {
+    color: var(--secondary);
+    text-decoration: none;
+    opacity: 1;
+  }
+}
+
+// ── Custom components (.quartz-config/components/) ─────────────────────────
+
+// HomeLink: "← Home" above the site title.
+.home-link {
+  align-self: flex-start;
+  margin-bottom: -0.6rem; // sit close to the title below
+  font-size: 0.85rem;
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+
+  &:hover {
+    text-decoration: none;
+
+    span {
+      margin-right: 0.15em; // arrow nudges left
+    }
+  }
+
+  span {
+    display: inline-block;
+    margin-right: 0;
+    transition: margin 0.15s ease;
+  }
+
+  // The left sidebar is a single row on phones; give the link its own line.
+  @media #{$mobile} {
+    flex-basis: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media #{$mobile} {
+  .page > #quartz-body .sidebar.left {
+    flex-wrap: wrap;
+  }
+}
+
+// SiteFooter: mirrors the homepage's .site-footer. The fleuron above it is
+// the `.center > hr` rule styled earlier in this file.
+.site-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2em;
+  margin-bottom: 3rem;
+  font-size: 0.9rem;
+
+  .footer-quote {
+    margin: 0;
+    padding: 0;
+    border: none;
+    font-style: italic;
+
+    p {
+      margin: 0;
+      line-height: 1.5;
+      color: var(--dark);
+    }
+  }
+
+  .footer-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .footer-link {
+    font-variant: small-caps;
+    letter-spacing: 0.08em;
+  }
+}

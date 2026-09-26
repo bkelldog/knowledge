@@ -20,8 +20,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Clone Quartz
-        run: git clone --depth 1 https://github.com/jackyzha0/quartz.git _quartz
+      - name: Clone Quartz (pinned to .quartz-config/QUARTZ_REF)
+        run: |
+          git init -q _quartz
+          cd _quartz
+          git remote add origin https://github.com/jackyzha0/quartz.git
+          git fetch -q --depth 1 origin "$(cat ../.quartz-config/QUARTZ_REF)"
+          git checkout -q FETCH_HEAD
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -38,8 +43,14 @@ jobs:
       - name: Copy favicon
         run: curl -L -o _quartz/quartz/static/icon.png https://willkelly.dev/assets/favicon.png
 
-      - name: Copy custom variables
-        run: cp .quartz-config/styles/variables.scss _quartz/quartz/styles/variables.scss
+      # Keep these mappings in sync with OVERRIDES in .quartz-config/dev.mjs
+      - name: Copy custom styles, components and static files
+        run: |
+          cp .quartz-config/quartz.ts _quartz/quartz.ts
+          mkdir -p _quartz/quartz/components/custom
+          cp -r .quartz-config/components/. _quartz/quartz/components/custom/
+          cp -r .quartz-config/styles/. _quartz/quartz/styles/
+          if [ -d .quartz-config/static ]; then cp -r .quartz-config/static/. _quartz/quartz/static/; fi
 
       - name: Copy content
         run: |

@@ -13,31 +13,37 @@ configuration:
   theme:
     fontOrigin: googleFonts
     cdnCaching: true
+    # Palatino is set in styles/custom.scss to match willkelly.dev. These Google
+    # fonts are only downloaded on devices that don't have Palatino installed.
     typography:
-      header: "Schibsted Grotesk"
-      body: "Source Sans Pro"
+      header: "Crimson Pro"
+      body: "Crimson Pro"
       code: "IBM Plex Mono"
+    # Ported from the homepage (HomePage/source/css/global.css):
+    #   paper #fffbf6, off-black #3d3d3d, off-black-darker #222222,
+    #   red-type #c8392b, ornament #b8a893
     colors:
       lightMode:
-        light: "#faf8f8"
-        lightgray: "#e5e5e5"
-        gray: "#b8b8b8"
-        darkgray: "#4e4e4e"
-        dark: "#2b2b2b"
-        secondary: "#284b63"
-        tertiary: "#84a59d"
-        highlight: "rgba(143, 159, 169, 0.15)"
-        textHighlight: "#fff23688"
+        light: "#fffbf6"
+        lightgray: "#ebe3d8"
+        gray: "#b8a893"
+        darkgray: "#3d3d3d"
+        dark: "#222222"
+        secondary: "#c8392b"
+        tertiary: "#a8876a"
+        highlight: "rgba(200, 57, 43, 0.06)"
+        textHighlight: "#f3d27a88"
+      # The homepage has no dark mode; this is the same palette as ink on dark paper.
       darkMode:
-        light: "#161618"
-        lightgray: "#393639"
-        gray: "#646464"
-        darkgray: "#d4d4d4"
-        dark: "#ebebec"
-        secondary: "#7b97aa"
-        tertiary: "#84a59d"
-        highlight: "rgba(143, 159, 169, 0.15)"
-        textHighlight: "#b3aa0288"
+        light: "#1b1916"
+        lightgray: "#35302a"
+        gray: "#7a6f62"
+        darkgray: "#d9d2c7"
+        dark: "#f2ece2"
+        secondary: "#e2604f"
+        tertiary: "#c4a88a"
+        highlight: "rgba(226, 96, 79, 0.10)"
+        textHighlight: "#b3862288"
 
 plugins:
   # Transformers
@@ -72,7 +78,7 @@ plugins:
       renderEngine: katex
 
   # Filters
-  - source: github:quartz-community/remove-drafts
+  - source: github:quartz-community/remove-draft
     enabled: true
 
   # Page types / emitters
@@ -138,3 +144,5 @@ plugins:
       position: right
       priority: 30
       display: desktop-only
+
+# The home link and footer are custom components, added in .quartz-config/quartz.ts.
