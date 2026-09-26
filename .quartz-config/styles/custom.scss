@@ -8,7 +8,7 @@
 
 :root {
   --serif: "Palatino Linotype", Palatino, "Book Antiqua", "Crimson Pro", Georgia, serif;
-  --titleFont: var(--serif);
+  --titleFont: "Noto Serif", var(--serif);
   --headerFont: var(--serif);
   --bodyFont: var(--serif);
 
@@ -45,9 +45,9 @@
 }
 
 .page-title {
+  font-family: var(--titleFont);
   font-size: 1.35rem;
   font-weight: normal;
-  font-variant: small-caps;
   letter-spacing: 0.08em;
   margin: 0;
 
@@ -56,9 +56,14 @@
     font-weight: normal;
   }
 
+  .title-small {
+    font-size: 0.76em;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
   @media #{$mobile} {
     font-size: 1.15rem;
-    margin-right: 1rem;
   }
 }
 
@@ -101,7 +106,14 @@ h2 {
 
 h3 {
   font-size: 1.2rem;
+}
+
+.markdown-rendered > h3 {
   font-style: italic;
+}
+
+.search .result-card > h3 {
+  color: var(--secondary);
 }
 
 // Article title with a short rule beneath it.
@@ -114,7 +126,7 @@ h3 {
 .page-header .popover-hint::after {
   content: "";
   display: block;
-  max-width: 40%;
+  max-width: 80%;
   margin: 1.25rem 0 1.75rem;
   border-top: 1px solid var(--hairline);
 }
@@ -248,10 +260,6 @@ tr {
 .search > .search-button {
   border-color: var(--hairline);
   border-radius: 2px;
-
-  & > p {
-    font-style: italic;
-  }
 }
 
 .search > .search-container > .search-space > * {
@@ -301,6 +309,21 @@ tr {
   height: 170px;
 }
 
+// Below desktop width the right sidebar becomes a row where every item gets an
+// equal share of space
+@media all and not #{$desktop} {
+  .page > #quartz-body .sidebar.right > .darkmode {
+    flex: 0 0 auto;
+  }
+}
+
+// No good place for the theme toggle on phones, so delete it on mobile.
+@media #{$mobile} {
+  .page > #quartz-body .sidebar.right > .darkmode {
+    display: none;
+  }
+}
+
 .page > #quartz-body .sidebar.right .toc {
   flex: 1 1 auto;
   min-height: 0;
@@ -348,12 +371,39 @@ ul.toc-content.overflow > li > a {
   @media #{$mobile} {
     flex-basis: 100%;
     margin-bottom: 0.5rem;
+    order: -2;
   }
 }
 
 @media #{$mobile} {
+  // Home link on its own line, then menu button, title and search evenly
+  // spaced in one row, with search taking the remaining width.
   .page > #quartz-body .sidebar.left {
     flex-wrap: wrap;
+    column-gap: 1rem;
+  }
+
+  .page > #quartz-body .sidebar.left > .search {
+    flex: 1 1 auto;
+    max-width: none;
+    padding-right: 1em;
+  }
+
+  .explorer-ul {
+    margin-top: 1em;
+  }
+
+  // The menu panel is positioned against the (sticky) sidebar that holds the
+  // header. Start it at the header's bottom edge and fill the rest of the
+  // screen, so the home link, title and search stay visible above it. It also
+  // sits inside the page's 1rem side padding; shift it back to the screen edge
+  // so it doesn't overhang the right side, and carry the padding inside instead.
+  .page > #quartz-body .sidebar.left .explorer .explorer-content {
+    top: 100%;
+    left: -1rem;
+    height: calc(100dvh - 100%);
+    max-height: none;
+    padding: 0 1rem 2rem;
   }
 }
 
@@ -367,6 +417,14 @@ ul.toc-content.overflow > li > a {
   gap: 2em;
   margin-bottom: 3rem;
   font-size: 0.9rem;
+
+  // The 404 page uses Quartz's minimal frame, which has no rule above the
+  // footer, so draw one here.
+  .page[data-frame="minimal"] & {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--hairline);
+  }
 
   .footer-quote {
     margin: 0;

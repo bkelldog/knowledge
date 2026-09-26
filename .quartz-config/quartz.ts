@@ -1,8 +1,8 @@
 // Replaces Quartz's quartz.ts at build time (see .github/workflows and dev.mjs).
 //
 // Adds the custom components in .quartz-config/components/ to every page
-// (a home link above the site title, and the homepage-style footer), and
-// forces the titles of selected pages.
+// (a home link and the site title at the top of the left sidebar, and the
+// homepage-style footer), and forces the titles of selected pages.
 //
 // Quartz builds the page layout from quartz.config.yaml inside loadQuartzConfig()
 // and hands it to its page dispatcher; the `layout` export below is not read
@@ -12,8 +12,10 @@ import { PageTypeDispatcher } from "./quartz/plugins/pageTypes/dispatcher"
 import { FullPageLayout } from "./quartz/cfg"
 import HomeLink from "./quartz/components/custom/HomeLink"
 import SiteFooter from "./quartz/components/custom/SiteFooter"
+import SiteTitle from "./quartz/components/custom/SiteTitle"
 
 const homeLink = HomeLink({ href: "https://willkelly.dev/", text: "Home" })
+const siteTitle = SiteTitle()
 
 const siteFooter = SiteFooter({
   quote: [
@@ -38,7 +40,7 @@ const forcedTitles: Record<string, string> = {
 // Page-type layouts only override the slots they define, so leave undefined
 // slots alone and let them fall back to the defaults.
 function addCustomComponents(layout: Partial<FullPageLayout>) {
-  if (layout.left) layout.left = [homeLink, ...layout.left]
+  if (layout.left) layout.left = [homeLink, siteTitle, ...layout.left]
   if (layout.footer) layout.footer = [siteFooter]
 }
 

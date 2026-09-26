@@ -13,10 +13,16 @@ configuration:
   theme:
     fontOrigin: googleFonts
     cdnCaching: true
-    # Palatino is set in styles/custom.scss to match willkelly.dev. These Google
-    # fonts are only downloaded on devices that don't have Palatino installed.
+    # These slots only decide which Google fonts get loaded; styles/custom.scss
+    # decides where each is used. Browsers download a font only when it's used.
+    #   header: Noto Serif, for the site title (.page-title); 500 is for its
+    #           smaller letters. The `title` slot would load only the letters
+    #           of "Knowledge Base", so the full family is loaded here instead.
+    #   body:   Crimson Pro, fallback for devices without Palatino.
     typography:
-      header: "Crimson Pro"
+      header:
+        name: "Noto Serif"
+        weights: [400, 500]
       body: "Crimson Pro"
       code: "IBM Plex Mono"
     # My custom colors from willkelly.dev home page:
@@ -102,28 +108,17 @@ plugins:
       priority: 10
 
   # Layout — left sidebar
-  - source: github:quartz-community/page-title
-    enabled: true
-    layout:
-      position: left
-      priority: 10
+  # The site title is a custom component (SiteTitle), added in quartz.ts.
   - source: github:quartz-community/search
     enabled: true
     layout:
       position: left
       priority: 20
-  - source: github:quartz-community/spacer
-    enabled: true
-    layout:
-      position: left
-      priority: 30
-      display: mobile-only
   - source: github:quartz-community/explorer
     enabled: true
     layout:
       position: left
       priority: 50
-      display: desktop-only
     options:
       folderClickBehavior: collapse
 
