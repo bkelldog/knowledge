@@ -21,6 +21,8 @@
 	- [ChartDB](https://chartdb.io)
 	- [Deck.gl - Map Visualization](https://deck.gl/)
 	- [KiCanvas - Embed KiCad Schematics into a Webpage](https://kicanvas.org/home/)
+	- [Squeal - TUI Database Manager](https://github.com/metruzanca/squeal)
+	- [TDF - TUI PDF Viewer](https://github.com/itsjunetime/tdf)
 - Deployment
 	- [Dokploy - Deploy through Docker](https://dockploy.com/)
 - Components

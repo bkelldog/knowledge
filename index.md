@@ -8,3 +8,4 @@ This page is an [Obsidian](https://obsidian.md/) notebook turned into HTML, so t
 - Physics $\to$ [[The Maxwell Equations]]
 - The Network $\to$ [[Web Ecosystem]]
 - Biographies $\to$ [[Michael Faraday]]
+- Some Reading $\to$ [[Articles & Blogs]]

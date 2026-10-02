@@ -1,5 +1,6 @@
+The Fourier Series is a means to represent any periodic function as an infinite (or finite!) sum of sine and cosine functions. It was developed by [[Joseph Fourier]] in the early 19th century in his seminal work on heat transfer. 
 # Definition
-For a function $f(x)$ what is **periodic** and integrable over one period of length $T$, the Fourier series expansion is,
+For a function $f(x)$ that is **periodic** and integrable over one period of length $T$, the Fourier series expansion is,
 $$
 f(x)=\frac{a_{0}}{2}+\sum_{n=1}^{\infty}(a_{n}\cos(\frac{2\pi nx}{T})+b_{n}\sin(\frac{2\pi nx}{T}))
 $$
@@ -14,7 +15,7 @@ $$
 $$
 b_{n}=\frac{2}{T}\int_{0}^Tf(x)\>\sin(\frac{2\pi nx}{T})\>dx
 $$
-To decompose an aperiodic function in this way, the [[The Fourier Transform|Fourier transform]] must be used. It should also be noted that the bounds of integration, here $0$ to $T$, can be any bounds so long as it is the length of a period, e.g. from $-\frac{T}{2}$ to $\frac{T}{2}$, or from $4T$ to $5T$, etc.
+Alternately, to decompose an aperiodic function in this way, the [[The Fourier Transform|Fourier transform]] must be used. It should also be noted that the bounds of integration, here $0$ to $T$, can be any bounds so long as it is the length of a period, e.g. from $-\frac{T}{2}$ to $\frac{T}{2}$, or from $4T$ to $5T$, etc.
 # Derivation
 The trigonometric functions sine and cosine are orthogonal to each other, and since they are orthogonal, they can be used as basis functions to define a new function space. We can then transform any periodic function within a normal space of $n$-dimensions, $\mathbb{R}^n$, into that new function space using a change of basis vectors.
 

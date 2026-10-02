@@ -5,21 +5,23 @@ For two functions $f(t)$ and $g(t)$, their convolution is given as,
 $$
 f(t)*g(t)=\int_{-\infty}^{\infty}f(\tau)\>g(t-\tau)\>d\tau=\int_{-\infty}^{\infty}f(t-\tau)\>g(\tau)\>d\tau \tag{1}
 $$
-It is also true that **convolution in the time domain is multiplication in the frequency domain**.
+where the convolution function is denoted by the star operator $*$;  on paper one would draw a star between $f$ and $g$. 
+
+It is also true that **convolution in the time domain is multiplication in the**[[Frequency Domain]].
 $$
 h(t)=f(t)*g(t) \Longleftrightarrow H(\omega)=F(\omega) \cdot G(\omega) \tag{2}
 $$
 # Derivation
 ## Convolution Equation
-Suppose we have a physical system whose input is $x(t)$ and whose output is $y(t)$, and that this system is [[linear time-invariant]]. Suppose that this system is also described by a known [[impulse response]] $h(t)$. This means that if the input signal is a dirac delta function, then the output will be the impulse response:
+Suppose we have a physical system whose input is $x(t)$ and whose output is $y(t)$, and that this system is [[linear time-invariant]]. Suppose that this system is also described by a known [[impulse response]] $h(t)$. This means that if the input signal is a [[Dirac Delta Function]], then the output will be the impulse response:
 $$
 x(t)=\delta(t) \>\to\>y(t)=h(t)
 $$
-Now, we must recognize that all functions can be expressed as an infinite series of dirac delta functions scaled by the value of the function at the point where the delta function equals one. Recall that the delta function is equal to one at only a single point, which we can call $\tau$, and that if we multiply the delta function by some other function $f(t)$, then the product will be zero everywhere except at $t=\tau$, were it will be equal to $f(\tau)$. In this way the delta function "filters" $f(t)$ down to a single point at $(\tau, f(\tau))$. We could create piecewise functions using some number of delta functions, where the product is equal to the original function at only a handful of points. For example, the following function, 
+Now, we must recognize that all functions can be expressed as an infinite series of dirac delta functions scaled by the value of the function at the point where the delta function equals one. Recall that the delta function is equal to one at only a single point, which we can call $\tau$, and that if we multiply the delta function by some other function $f(t)$, then the product will be zero everywhere except at $t=\tau$, at which point it will be equal to $f(\tau)$. In this way the delta function "filters" $f(t)$ down to a single point at $(\tau, f(\tau))$. We could create piecewise functions using some number of delta functions, where the product is equal to the original function at only a handful of points. For example, the following function, 
 $$
 f(t)=t^2\>(\delta(t+2)\>+\>\delta(t-1))
 $$
-is equal to zero everywhere except at $t=-2$ and $t=1$, where it is equal to $4$ and $1$ respectively. Generally, one can "pick out" a single point of any function by multiplying it by a delta function translated to that single point,
+is equal to zero everywhere except at $t=-2$ and $t=1$, where it is equal to $4$ and $1$ respectively. The reader should be able to see that the regular function $f(t)=t^2$ is being filtered down to two single points by the First function. Generally, one can "pick out" a single point of any function by multiplying it by a delta function translated to that single point. 
 
 We can then imagine that an infinite series of delta functions would give us an infinite series of points that lie on $f(t)$,
 $$

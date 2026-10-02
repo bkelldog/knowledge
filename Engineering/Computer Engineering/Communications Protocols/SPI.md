@@ -4,7 +4,7 @@
 
 ## Naming
 
-SPI pins are often called by different names accoding to different vendors or designers. Here is a small guide to the names used.
+SPI pins are often named differently by different vendors or designers. Here is a small guide to the names used.
 
 Pin:
 - Clock

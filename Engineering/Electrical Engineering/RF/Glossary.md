@@ -20,6 +20,8 @@
 	- Signal-to-Noise Ratio.
 - SINR
 	- Signal-to-Interference-and-Noise Ratio.
+- Time Domain
+	- When evaluating signals, the time domain is the representation of the signal in time. This representation is constructed by drawing a graph, placing time, $t$, on the x-axis, and drawing the signal's amplitude on the y-axis.
 - VSWR
 	- Voltage Standing Wave Ratio
 	- See [[VSWR]]
