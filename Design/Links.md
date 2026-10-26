@@ -2,7 +2,14 @@
 - General Collections
 	- [archives.design](https://archives.design/)
 	- [The Met Archive](https://www.metmuseum.org/art/collection/search?searchField=All&showOnly=openAccess&sortBy=relevance)
+	- [Cari Institute](https://cari.institute/)
+	- [Design Reviewed](https://designreviewed.com/)
+	- [Artvee](https://artvee.com/)
+	- [Gurafiku - Japanese Graphic Design](https://gurafiku.tumblr.com/)
 - Textures and Patterns
 	- [CityScans - Authentic Urban Texture Maps](https://cityscans.shop/)
 - Font & Type
 	- [Letterform Archive](https://oa.letterformarchive.org/)
+	- [republish](https://republi.sh/)
+- Creators
+	- [Harry Isaac](https://www.harryisaac.com/) in Brooklyn, NYC

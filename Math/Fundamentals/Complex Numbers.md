@@ -1,0 +1,6 @@
+A complex number is a number composed of a real number element and an [[Imaginary Numbers|imaginary number]] element, which we represent as a sum of those two elements. For example, a complex number might be $3+5i$, where $3$ is simply a real number, and $i$ is the imaginary number.
+
+# The Complex Plane
+All real numbers together form the real number line, which we call $\mathbb{R}$ in notation; likewise all imaginary numbers form the imaginary number line, which if annotated is either $\mathbb{I}$ or simple $i\mathbb{R}$. Then naturally, when we speak of complex numbers in the form $a+bi$, we are describing a number *plane* where the real number axis $\mathbb{R}$ is placed [[Orthogonality|orthogonally]] to the imaginary number axis $i\mathbb{R}$ to form the complex number plane $\mathbb{C}$. All complex numbers then become represented as points on the 2D complex plane, with each points coordinates being $a+bi$.
+
+Almost nobody ever refers to the set of imaginary numbers in notation (or at all). If we talk about complex numbers, we use $\mathbb{C}$, and we have reason to talk about imaginary numbers alone.

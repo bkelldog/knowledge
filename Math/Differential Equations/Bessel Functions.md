@@ -13,7 +13,7 @@ We can take equation (1) and divide it by $x^2$ to get, for $x>0$,
 $$
 y''+\frac{1}{x}y'+(1-\frac{p^2}{x^2})y=0 \tag{2}
 $$
-This is the standard form of a second-order differential eq., in the form $y''+P(x)y'+Q(x)y=0$. We can see clearly that at $x=0$ this equation produces an undefined value, so at that point the function is not [[Analyticity]] and this represents a regular singularity. For that reason, according to the [[Frobenius Method]], we can assume a solution in the following form:
+This is the standard form of a second-order differential eq., in the form $y''+P(x)y'+Q(x)y=0$. We can see clearly that at $x=0$ this equation produces an undefined value, so at that point the function is not [[Analyticity|analytic]] and this represents a regular singularity. For that reason, according to the [[Frobenius Method]], we can assume a solution in the following form:
 $$
 y=x^{\alpha}(a_{0}+a_{1}x+a_{2}x^2+\dots+a_{n}x^n+\dots) = \sum_{n=0}^{\infty}a_{n}x^{\alpha+n}
 $$

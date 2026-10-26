@@ -7,13 +7,13 @@ f(t)*g(t)=\int_{-\infty}^{\infty}f(\tau)\>g(t-\tau)\>d\tau=\int_{-\infty}^{\inft
 $$
 where the convolution function is denoted by the star operator $*$;  on paper one would draw a star between $f$ and $g$. 
 
-It is also true that **convolution in the time domain is multiplication in the**[[Frequency Domain]].
+It is also true that **convolution in the time domain is multiplication in the** [[Frequency Domain|frequency domain]].
 $$
 h(t)=f(t)*g(t) \Longleftrightarrow H(\omega)=F(\omega) \cdot G(\omega) \tag{2}
 $$
 # Derivation
 ## Convolution Equation
-Suppose we have a physical system whose input is $x(t)$ and whose output is $y(t)$, and that this system is [[linear time-invariant]]. Suppose that this system is also described by a known [[impulse response]] $h(t)$. This means that if the input signal is a [[Dirac Delta Function]], then the output will be the impulse response:
+Suppose we have a physical system whose input is $x(t)$ and whose output is $y(t)$, and that this system is [[linear time-invariant]]. Suppose that this system is also described by a known [[impulse response]] $h(t)$. This means that if the input signal is a [[Dirac Delta Function|Dirac delta functio]], then the output will be the impulse response:
 $$
 x(t)=\delta(t) \>\to\>y(t)=h(t)
 $$

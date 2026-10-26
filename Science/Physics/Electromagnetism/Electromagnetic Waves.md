@@ -1,0 +1,1 @@
+Electromagnetic waves are excitations of the electromagnetic field created by moving charge. We properly refer to any electromagnetic wave as **light**, but in common parlance we hardly use this term, preferring **radiation** or simply **wave**.

@@ -5,6 +5,7 @@
 - dBm
 - dBi
 	- A special version of dB used solely to compare different types of antennas. the *i* refers to a theoretical ideal isotropic antenna, which radiates equally in all directions in a perfect sphere. A non-isotropic antenna offers higher "gain" in some directions, and lower "gain" or higher loss in others. therefore in those areas which receive higher "gain", we measure the non-isotrpic antenna by how much better it is than an isotropic antenna, using dBi.
+- [[Dynamic Range]]
 - Gain
 	- A measurement of how much a signal has increased in strength or amplitude between two points along its path.
 - Loss
@@ -22,6 +23,5 @@
 	- Signal-to-Interference-and-Noise Ratio.
 - Time Domain
 	- When evaluating signals, the time domain is the representation of the signal in time. This representation is constructed by drawing a graph, placing time, $t$, on the x-axis, and drawing the signal's amplitude on the y-axis.
-- VSWR
+- [[VSWR]]
 	- Voltage Standing Wave Ratio
-	- See [[VSWR]]

@@ -1,6 +1,6 @@
 See [[Manuscript/Knowledge/Science/Physics/Electromagnetism/The Maxwell Equations|The Maxwell Equations]].
 
-In most studies of the Maxwell Equations, the [[Manuscript/Knowledge/Science/Physics/Electromagnetism/The Maxwell Equations#Definition|regular forms]] of the equations are used since they are the most appropriate for electromagnetism **in the vacuum**. However, in the study of RF systems, we almost never consider wave behavior in the vacuum, unless we are considering the behavior of waves in air (which we approximate to the vacuum). More often we consider the behavior of waves **within some dielectric material or waveguide** where the usual wave equations become burdensome.
+In most studies of the Maxwell Equations, the [[Manuscript/Knowledge/Science/Physics/Electromagnetism/The Maxwell Equations#Definition|regular forms]] of the equations are used since they are the most appropriate for electromagnetism **in a vacuum**. However, in the wider study of RF systems, we almost never consider wave behavior in the vacuum unless the waves are in air (which we approximate to be vacuum-like). More often we consider the behavior of waves **within some dielectric material or waveguide** where the usual wave equations become burdensome.
 
 # Matter Forms of the Equations
 It is useful, then, to transform the equations in the following way:

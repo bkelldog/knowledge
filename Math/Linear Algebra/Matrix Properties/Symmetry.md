@@ -23,5 +23,4 @@ M = \begin{pmatrix}
 0 \quad b \\
 -b \quad 0
 \end{pmatrix}
-$$0 \quad b \\
--b \quad 0
+$$

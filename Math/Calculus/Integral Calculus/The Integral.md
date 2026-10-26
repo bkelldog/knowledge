@@ -12,7 +12,7 @@ The integral originally solved the problem of finding the areas of certain geome
 # The Line Integral
 The line integral is an extension of the regular Riemann integral which is applied to a curve in vector space. It can be denoted symbolically with the usual integral symbol, or with the special "path integral" symbol which indicates that the curve is closed:
 $$
-\int \quad or \quad \oint
+\int \quad \text{or} \quad \oint
 $$
 ## Scalar Valued Functions
 Suppose there is a curve $C$ that exists in $n$-dimensional space $\mathbb{R}^n$, in the presence of a [[Scalar Fields|scalar field]] $f$. Suppose that $C$ is expressed by a [[Parameterization|parameterized function]] $\vec{r}(t)$ which completely describes $C$, so that, if $t$ is defined on the interval $[a, b]$, $\vec{r}(a)$ and $\vec{r}(b)$ represent the endpoints of $C$ (in notation, $\vec{r}(t):[a, b] \to C$ ). If the vector field $f$ exists everywhere in some subset of the $n$-dimensional space, which we'll call $U$, and if the curve $C$ is confined within $U$ (in math notation, $f:U\subseteq \mathbb{R}^n \to \mathbb{R}^n$), which is to say that $C$ is everywhere affected by $f$, then we can define the line integral of $f$ along $C$ to be the dot product of $f$ at some point $t_{0}$ with the tangent line of $\vec{r}(t_{0})$. In notation,

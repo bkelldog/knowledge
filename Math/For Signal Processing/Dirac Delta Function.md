@@ -9,7 +9,7 @@ $$
 0, \quad \>\>x\neq 0
 \end{cases} \quad \quad \quad \int_{-\infty}^{\infty}\delta(x)\>dx = 1
 $$
-Mathematicians have pointed out[^1] that it is impossible for a function to satisfy both of these conditions simultaneously, because the integral would evaluate to zero. Dirac himself responded to this critique by instead formulating his function as a "generalized function" or what we would now call a distribution (i.e. not itself a function but a class which encompasses many functions), and proposing that his integral should be interpreted as,
+Mathematicians have pointed out[^1] that it is impossible for a function to satisfy both of these conditions simultaneously, because the [[The Integral|integral]] would evaluate to zero. Dirac himself responded to this critique by instead formulating his function as a "generalized function" or what we would now call a distribution (i.e. not itself a function but a class which encompasses many functions), and proposing that his integral should be interpreted as,
 $$
 \int_{-\infty}^{\infty}\delta(x)\>dx = \lim_{ \epsilon \to 0^+ } \int_{-\infty}^{\infty} \delta_{\epsilon}(x)\>dx
 $$
@@ -72,8 +72,5 @@ See [[Convolution]].
 2. [Paul Dirac's Delta Function](https://galileo-unbound.blog/2022/12/17/paul-diracs-delta-function/) by David Nolte
 3. [Lecture Notes on the Dirac Delta Function, Fourier Transform, Laplace Transform](https://materia.dfa.unipd.it/salasnich/dfl/dfl.pdf) by Luca Salasnich
 4. [Delta Function](https://books.physics.oregonstate.edu/LinAlg/ch11.html) by Corinne Manogue and Tevian Dray
-
-## See Also
-[[The Integral]]
 
 [^1]: See [Lecture Notes on the Dirac Delta Function, Fourier Transform, Laplace Transform](https://materia.dfa.unipd.it/salasnich/dfl/dfl.pdf) by Luca Salasnich, pg. 1

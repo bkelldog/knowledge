@@ -8,6 +8,7 @@
 	- [wavefnx.com](https://wavefnx.com/)
 	- [Colonel Panic](https://colonelpanic.tech)
 	- [A Circle of Hope Hacker's Conferenec 2018](https://xii.hope.net/)
+	- [FPGA Horizons - Lab Notes](https://fpgahorizons.com/lab-notes/)
 - Software
 	- https://meyerweb.com
 	- [Federico Magnani's Blog - Rust, Computational Mathematics, Finance and other stuff.](https://fedemagnani.github.io/)
@@ -20,12 +21,15 @@
 	- [Convergent Thinking](https://convergentthinking.sh/)
 	- [Window Function - Figure of Merits](https://www.gaussianwaves.com/2020/09/window-function-figure-of-merits/)
 	- [ickma.dev - Notes on Deep Learning and Math](https://ickma2311.github.io/)
+	- [Justin Chun](https;//zzz.day)
 - Physics
 	- [Zero Point Field Blog](https://www.zero-pointfieldtechnologies.com/blog)
 - Decentralization
 	- [Sovereign Engineering](https://sovereignengineering.io/)
 - Productivity
 	- [Farnam Street](https://fs.blog/)
+	- [Never Bet Against Humans by Nacho Marchionna](https://nachomarchionna.substack.com/p/14-never-bet-against-humans)
+	- [Uncensored Dale Carnegie](https://socialskillswisdom.com)
 - Language
 	- https://nikhilsd.com/
 - Marketing

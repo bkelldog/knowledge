@@ -34,8 +34,6 @@
 - Art
 	- [Grainrad - Image Editor](https://grainrad.com/)
 # Business
-- Managing People
-	- [Uncensored Dale Carnegie](https://socialskillswisdom.com)
 - Money
 	- Invoicing
 		- [Invoicely - Beautiful Invoice Template](https://invoicely.gg)
@@ -43,5 +41,3 @@
 		- [x402 - Internet Native Payments](https://www.x402.org/)
 - Automations
 	- [UseSend - Automated Emails](https://usesend.com/)
-- Website
-	- [Formless Feedback](https://www.formlessfeedback.com/)

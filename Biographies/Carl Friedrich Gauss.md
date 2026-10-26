@@ -1,0 +1,1 @@
+![Gauss at the Age of 50](https://upload.wikimedia.org/wikipedia/commons/3/33/Bendixen_-_Carl_Friedrich_Gau%C3%9F%2C_1828.jpg)
