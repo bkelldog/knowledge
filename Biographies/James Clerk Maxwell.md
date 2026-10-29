@@ -1,3 +1,6 @@
+![Young James Clerk Maxwell](https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ac/YoungJamesClerkMaxwell.jpg/960px-YoungJamesClerkMaxwell.jpg)
+
+
 He [wrote poetry](https://archive.org/details/lifeofjamesclerk00camprich/page/576/mode/2up).
 
 

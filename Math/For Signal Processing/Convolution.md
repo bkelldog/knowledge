@@ -1,4 +1,4 @@
-A convolution is a type of [[The Integral|integral]] which is useful for passing a signal through a [[Transfer Functions|transfer function]]. In essence, it decomposes a continuous function into an infinite sum of [[Dirac Delta Function|Dirac delta functions]], then multiplies each by the transfer function, and recombines those infinite delta functions through the infinite sum of the integral to get an output signal on the other side.
+A convolution is a type of [[The Integral|integral]] which is useful for computing the output of a signal passing through a [[Transfer Functions|transfer function]]. In essence, it decomposes a continuous function into an infinite sum of [[Dirac Delta Function|Dirac delta functions]], then multiplies each by the transfer function, and recombines those infinite delta functions through the infinite sum of the integral to get an output signal on the other side.
 
 # Definition
 For two functions $f(t)$ and $g(t)$, their convolution is given as,
