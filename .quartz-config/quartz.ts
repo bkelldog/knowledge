@@ -2,7 +2,8 @@
 //
 // Adds the custom components in .quartz-config/components/ to every page
 // (a home link and the site title at the top of the left sidebar, and the
-// homepage-style footer), and forces the titles of selected pages.
+// homepage-style footer), forces the titles of selected pages, and draws
+// ```plot blocks with Quick Plot (quick-plot/, copied from the Obsidian plugin).
 //
 // Quartz builds the page layout from quartz.config.yaml inside loadQuartzConfig()
 // and hands it to its page dispatcher; the `layout` export below is not read
@@ -13,6 +14,7 @@ import { FullPageLayout } from "./quartz/cfg"
 import HomeLink from "./quartz/components/custom/HomeLink"
 import SiteFooter from "./quartz/components/custom/SiteFooter"
 import SiteTitle from "./quartz/components/custom/SiteTitle"
+import { remarkQuickPlot } from "./quick-plot/remark.ts"
 
 const homeLink = HomeLink({ href: "https://willkelly.dev/", text: "Home" })
 const siteTitle = SiteTitle()
@@ -55,6 +57,12 @@ config.plugins.transformers.push({
       if (title) file.data.frontmatter = { ...file.data.frontmatter, title }
     },
   ],
+})
+
+// Draws ```plot blocks as SVG. And does so first, so no other plugins see those blocks as code.
+config.plugins.transformers.unshift({
+  name: "QuickPlot",
+  markdownPlugins: () => [remarkQuickPlot],
 })
 
 export const layout = await loadQuartzLayout()

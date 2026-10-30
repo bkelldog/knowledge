@@ -43,13 +43,14 @@ jobs:
       - name: Copy favicon
         run: curl -L -o _quartz/quartz/static/icon.png https://willkelly.dev/assets/favicon.png
 
-      - name: Copy custom styles, components and static files
+      - name: Copy custom styles, components, static files and Quick Plot plugin
         run: |
           cp .quartz-config/quartz.ts _quartz/quartz.ts
           mkdir -p _quartz/quartz/components/custom
           cp -r .quartz-config/components/. _quartz/quartz/components/custom/
           cp -r .quartz-config/styles/. _quartz/quartz/styles/
           if [ -d .quartz-config/static ]; then cp -r .quartz-config/static/. _quartz/quartz/static/; fi
+          cp -r .quartz-config/quick-plot _quartz/quick-plot
 
       - name: Copy content
         run: |

@@ -444,3 +444,25 @@ ul.toc-content.overflow > li > a {
     letter-spacing: 0.08em;
   }
 }
+
+// Quick Plot: ```plot blocks drawn as SVG at build time (quick-plot/remark.ts).
+.quick-plot {
+  color: var(--darkgray);
+  margin: 1em 0;
+}
+
+.quick-plot-svg {
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.quick-plot-error {
+  color: #c8392b;
+
+  pre {
+    margin: 0.4em 0 0;
+  }
+}

@@ -28,6 +28,7 @@ const OVERRIDES = [
   { from: "components", to: "quartz/components/custom" },
   { from: "styles", to: "quartz/styles" },
   { from: "static", to: "quartz/static" },
+  { from: "quick-plot", to: "quick-plot" },
 ]
 
 const run = (cmd, cwd = QUARTZ_DIR) => execSync(cmd, { cwd, stdio: "inherit" })
