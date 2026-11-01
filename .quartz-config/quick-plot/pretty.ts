@@ -73,6 +73,7 @@ export function pretty(node: Node): string {
       return `−${wrap(pretty(node.arg), precedence(node.arg) < UNARY)}`
     case "call":
       if (node.name === "abs") return `|${pretty(node.args[0])}|`
+      if (node.name === "dirac") return `δ(${pretty(node.args[0])})`
       return `${node.name}(${node.args.map(pretty).join(", ")})`
     case "binary":
       return prettyBinary(node)

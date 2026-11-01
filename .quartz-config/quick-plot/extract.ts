@@ -3,6 +3,7 @@
 //
 //   x^2x                     an expression (several per line with ;)
 //   y = x^2,  f(x) = x^2     an expression with a label
+//   g(x) = 2 f(x)            a labelled function may be used in other lines
 //   z = sin x cos y          a surface: two variables make a 3D plot
 //   x^2 for x > 3            an expression drawn only where the condition holds
 //                            (see condition.ts for the forms it takes)
@@ -14,12 +15,12 @@
 // Every expression is normalised (LaTeX, Unicode) and parsed here, so later
 // stages only see trees.
 
-import { variablesOf, type Node } from "./ast.ts"
+import { substitute, variablesOf, type Node } from "./ast.ts"
 import { parseCondition, resolveCondition, splitCondition, type Condition, type Domain } from "./condition.ts"
 import { compile } from "./evaluate.ts"
 import { parseColor, splitStyle, type Color, type Style } from "./style.ts"
 import { normalizeMath, stripMathDelimiters } from "./normalize.ts"
-import { parse, ParseError, variableName, variableSource } from "./parser.ts"
+import { parse, ParseError, variableName, variableSource, type DefinedFunctions } from "./parser.ts"
 import { pretty } from "./pretty.ts"
 
 export interface Range {
@@ -31,6 +32,8 @@ export interface Range {
 
 export interface Series {
   node: Node
+  /** The expression as written, with calls like 2 f(x) kept, for the legend. */
+  written: Node
   /** Label from the input (y, f(x), a name), or null to use the expression. */
   label: string | null
   /** The line it came from, 1-based, for error messages. */
@@ -44,6 +47,14 @@ export interface Series {
   /** Variables named in the label, as in f(x, y) = …. */
   arguments: string[]
   style: Style | null
+}
+
+/** A function labelled in the block, like f(x) = x^2, which other lines may call. */
+export interface DefinedFunction {
+  params: string[]
+  /** Null until its line is read; lines may call functions defined further down. */
+  body: Node | null
+  line: number
 }
 
 export interface View {
@@ -78,6 +89,8 @@ export interface PlotSpec {
   colors: Color[] | null
   /** Use colours exactly as given, without adjusting them for contrast. */
   exactColors: boolean
+  /** Functions labelled in the block, by name. */
+  functions: Record<string, DefinedFunction>
   notes: string[]
 }
 
@@ -123,6 +136,7 @@ export function extract(source: string): PlotSpec {
     thickness: null,
     colors: null,
     exactColors: false,
+    functions: findDefinitions(source),
     notes: [],
   }
   const ranges: { key: "x" | "y" | "z"; text: string; line: number }[] = []
@@ -159,6 +173,8 @@ export function extract(source: string): PlotSpec {
   })
 
   if (spec.series.length === 0) throw new ExtractError("Nothing to plot. Write an expression, like x^2.", 1)
+  // Calls to functions defined further down are filled in now.
+  for (const series of spec.series) series.node = inline(series.node, spec, series.line)
 
   const chosen = variables ?? chooseVariables(spec)
   if (chosen.length > 2) throw new ExtractError(`At most two variables can be plotted; "var:" names ${chosen.join(", ")}.`, 1)
@@ -201,6 +217,52 @@ export function extract(source: string): PlotSpec {
     spec[key] = parseRange(text, line, spec, axisVariable)
   }
   return spec
+}
+
+// Labels like f(x) = …, or |F(s)| = …, at the start of a statement.
+const DEFINITION = /^(?:[a-zA-Z][\w ]*?\s*:\s*)?\|?\s*([a-zA-Z]+)\s*\(([^()]*)\)\s*\|?\s*=(?!=)/
+
+/**
+ * The functions the block labels, found before any line is read so a line can
+ * call one defined below it. Their bodies are filled in as their lines are read.
+ */
+function findDefinitions(source: string): Record<string, DefinedFunction> {
+  const found: Record<string, DefinedFunction> = {}
+  source.split(/\r?\n/).forEach((raw, index) => {
+    for (const part of splitStatements(raw.trim())) {
+      const m = DEFINITION.exec(stripMathDelimiters(part))
+      if (m && !(m[1] in found)) found[m[1]] = { params: m[2].split(","), body: null, line: index + 1 }
+    }
+  })
+  return found
+}
+
+/** Replaces calls to defined functions with their bodies: f(2x) with (2x)^2. */
+function inline(node: Node, spec: PlotSpec, line: number, calling: string[] = []): Node {
+  switch (node.kind) {
+    case "unary":
+      return { ...node, arg: inline(node.arg, spec, line, calling) }
+    case "binary":
+      return { ...node, left: inline(node.left, spec, line, calling), right: inline(node.right, spec, line, calling) }
+    case "call": {
+      const args = node.args.map((a) => inline(a, spec, line, calling))
+      const def = node.defined ? spec.functions[node.name] : undefined
+      if (!def?.body) return { ...node, args }
+      if (calling.includes(node.name)) {
+        const chain = [...calling.slice(calling.indexOf(node.name)), node.name].join(" → ")
+        throw new ExtractError(
+          calling.length === 1 && calling[0] === node.name
+            ? `${node.name} is defined in terms of itself, which can't be plotted.`
+            : `These functions are defined in terms of each other: ${chain}.`,
+          def.line,
+        )
+      }
+      const body = inline(def.body, spec, def.line, [...calling, node.name])
+      return substitute(body, Object.fromEntries(def.params.map((p, i) => [p, args[i]])))
+    }
+    default:
+      return node
+  }
 }
 
 // `;` separates statements, but not inside parentheses.
@@ -249,21 +311,26 @@ function readStatement(text: string, line: number, spec: PlotSpec) {
     const unreadable = `Can't read "${lhs}" as a name. Write y = …, f(x) = …, z = … or a = 2.`
     const name = call ? call[1] : readVariable(lhs, unreadable, line)
     const args = call ? call[2].split(",").map((a) => readVariable(a, unreadable, line)) : []
-    const node = parseExpression(rhs, line, spec)
-    // A parameter's value may use earlier parameters: a = 2; b = 3a.
+    // A function keeps its body as written, so calls in it are filled in when it's used.
+    const written = parseExpression(rhs, line, spec, false)
+    if (call && spec.functions[name]?.line === line) spec.functions[name] = { params: args, body: written, line }
+    const node = inline(written, spec, line)
+    // A parameter's value may use earlier parameters and functions: a = 2; b = 3a; c = f(2).
     if (!call && !magnitude && !LABEL_NAMES.has(name) && variablesOf(node).every((v) => v in spec.parameters)) {
       if (condition) throw new ExtractError(`${show(name)} is a parameter, so it can't have a condition.`, line)
       if (style) throw new ExtractError(`${show(name)} is a parameter, so it can't have a style.`, line)
-      spec.parameters[name] = compile(node)(spec.parameters)
+      spec.parameters[name] = withLine(line, () => compile(node)(spec.parameters))
       return
     }
     label = call ? `${name}(${args.map(show).join(", ")})` : show(name)
     if (magnitude) label = `|${label}|`
-    spec.series.push({ node, label, line, condition, domain: null, domain2: null, arguments: args, style })
+    spec.series.push({ node, written, label, line, condition, domain: null, domain2: null, arguments: args, style })
     return
   }
 
-  spec.series.push({ node: parseExpression(body, line, spec), label, line, condition, domain: null, domain2: null, arguments: [], style })
+  const written = parseExpression(body, line, spec, false)
+  const node = inline(written, spec, line)
+  spec.series.push({ node, written, label, line, condition, domain: null, domain2: null, arguments: [], style })
 }
 
 const show = (name: string) => pretty({ kind: "variable", name })
@@ -285,18 +352,22 @@ function withLine<T>(line: number, fn: () => T): T {
   }
 }
 
-function parseExpression(text: string, line: number, spec: PlotSpec): Node {
+function parseExpression(text: string, line: number, spec: PlotSpec, fillIn = true): Node {
   const normalized = normalizeMath(text)
   try {
-    const { node, notes } = parse(normalized)
+    const { node, notes } = parse(normalized, definedArities(spec))
     for (const note of notes) if (!spec.notes.includes(note)) spec.notes.push(note)
-    return node
+    return fillIn ? inline(node, spec, line) : node
   } catch (e) {
     if (e instanceof ParseError) {
       throw new ExtractError(e.message, line, { text: normalized, position: e.position })
     }
     throw e
   }
+}
+
+function definedArities(spec: PlotSpec): DefinedFunctions {
+  return Object.fromEntries(Object.entries(spec.functions).map(([name, f]) => [name, f.params.length]))
 }
 
 /** Variables that aren't parameters, in first-seen order. */
@@ -388,7 +459,7 @@ function parseRange(text: string, line: number, spec: PlotSpec, axisVariable: st
   if (parts.length !== 2) throw new ExtractError(`Can't read the range "${text}". Write it like -5 to 5.`, line)
 
   const [min, max] = parts.map((p) => {
-    const node = parseExpression(p, line, { notes: [] } as unknown as PlotSpec)
+    const node = parseExpression(p, line, { notes: [], functions: spec.functions } as unknown as PlotSpec)
     const value = compile(node)(spec.parameters)
     if (!Number.isFinite(value)) throw new ExtractError(`"${p}" in the range isn't a number.`, line)
     return value

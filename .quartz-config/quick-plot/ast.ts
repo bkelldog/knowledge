@@ -10,7 +10,9 @@ export type Node =
   | { kind: "unary"; op: "-"; arg: Node }
   // `implicit` marks multiplication written without an operator, as in 2x.
   | { kind: "binary"; op: BinaryOp; left: Node; right: Node; implicit?: boolean }
-  | { kind: "call"; name: string; args: Node[] }
+  // `defined` marks a call to a function from the plot block, like f(x) = x^2,
+  // rather than a built-in. extract.ts replaces these with the function's body.
+  | { kind: "call"; name: string; args: Node[]; defined?: boolean }
 
 /** Every variable name used in a tree, in first-seen order. */
 export function variablesOf(node: Node, found: string[] = []): string[] {
@@ -30,4 +32,20 @@ export function variablesOf(node: Node, found: string[] = []): string[] {
       break
   }
   return found
+}
+
+/** A copy of a tree with variables replaced: substitute(x^2, {x: 2t}) is (2t)^2. */
+export function substitute(node: Node, values: Record<string, Node>): Node {
+  switch (node.kind) {
+    case "variable":
+      return values[node.name] ?? node
+    case "unary":
+      return { ...node, arg: substitute(node.arg, values) }
+    case "binary":
+      return { ...node, left: substitute(node.left, values), right: substitute(node.right, values) }
+    case "call":
+      return { ...node, args: node.args.map((a) => substitute(a, values)) }
+    default:
+      return node
+  }
 }

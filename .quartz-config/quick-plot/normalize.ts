@@ -32,7 +32,7 @@ const SYMBOLS: Record<string, string> = {
 // LaTeX commands that are just a name the parser knows (\sin → sin).
 const LATEX_NAMES = [
   "sin", "cos", "tan", "sec", "csc", "cot", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh",
-  "exp", "ln", "log", "min", "max", "sgn", "pi",
+  "exp", "ln", "log", "min", "max", "sgn", "pi", "dirac",
 ]
 
 // LaTeX commands that only affect spacing or sizing.

@@ -11,7 +11,7 @@ Transmitting at different times.
 ## Frequency-Domain Multiplexing
 Transmitting at different frequencies.
 
-See [[Frequency Domain]].
+See [[Manuscript/Knowledge/Engineering/Electrical Engineering/RF/Theory/Frequency Domain]].
 
 ## Amplitude Multiplexing
 Transmitting at different amplitudes.

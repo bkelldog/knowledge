@@ -43,6 +43,8 @@ export function compile(node: Node): Compiled {
     }
     // falls through only if a new BinaryOp is added without a case
     case "call": {
+      // extract.ts fills in defined functions; one left here had no definition yet.
+      if (node.defined) throw new Error(`${node.name}(…) is used before it's defined. Move its definition above this line.`)
       const fn = FUNCTIONS[node.name].fn
       const args = node.args.map(compile)
       if (args.length === 1) {

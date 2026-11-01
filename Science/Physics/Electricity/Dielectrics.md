@@ -5,7 +5,7 @@ A dielectric is determined by its dielectric constant $k$, which is denoted as e
 $$
 \kappa=\frac{\epsilon}{\epsilon_0}
 $$
-where $\epsilon$ is the electrical [[Permittivity|permittivity]] of the substance, and $\epsilon_0$ is the electrical permittivity of empty space. This constant informs us as to the magnitude of the dielectric's insulating power: a high $\kappa$ indicates a good insulator, while a low $\kappa$ indicates a poor insulator (note that $\kappa=1$ is the constant's lowest possible value). Although I use the term 'conductor', the dielectric constant is, strictly speaking, only a measure of how well the dielectric allows the electric field to pervade it, not how well charge moves through it.
+where $\epsilon$ is the electrical [[Manuscript/Knowledge/Science/Physics/Electricity/Permittivity|permittivity]] of the substance, and $\epsilon_0$ is the electrical permittivity of empty space. This constant informs us as to the magnitude of the dielectric's insulating power: a high $\kappa$ indicates a good insulator, while a low $\kappa$ indicates a poor insulator (note that $\kappa=1$ is the constant's lowest possible value). Although I use the term 'conductor', the dielectric constant is, strictly speaking, only a measure of how well the dielectric allows the electric field to pervade it, not how well charge moves through it.
 
 The dielectric constant is often derived by testing the material between the plates of a [[The Capacitor|capacitor]]. The plates are charged, and the capacitance of the empty capacitor, $C_0$, is taken; then the dielectric is inserted, and the new capacitance, $C_d$, is measured.
 

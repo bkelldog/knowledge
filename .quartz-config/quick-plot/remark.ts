@@ -14,7 +14,9 @@ interface CodeNode {
 const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
 
 export function plotHtml(source: string): { html: string; error: string | null } {
-  const result = renderPlot(source)
+  // Quartz pages are light unless its theme script says dark, so don't fall
+  // back to the system setting the way a plain page would.
+  const result = renderPlot(source, { followSystemTheme: false })
   if (!result.ok) {
     const caret = result.detail ? `<pre>${esc(result.detail.text)}\n${" ".repeat(result.detail.position)}^</pre>` : ""
     const message = `Line ${result.line}: ${result.message}`

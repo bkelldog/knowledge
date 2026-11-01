@@ -46,12 +46,15 @@ export const FUNCTIONS: Record<string, FunctionDef> = {
   round: { arity: [1, 1], fn: Math.round },
   min: { arity: [1, Infinity], fn: Math.min },
   max: { arity: [1, Infinity], fn: Math.max },
-  // Signals: unit step (u(0) = 1), rectangle of width 1, normalised sinc.
+  // Signals: unit step (u(0) = 1), rectangle of width 1, normalised sinc, and
+  // the Dirac impulse. An impulse has no value to sample (it is 0 here);
+  // impulse.ts draws it as an arrow instead.
   u: { arity: [1, 1], fn: heaviside },
   step: { arity: [1, 1], fn: heaviside },
   heaviside: { arity: [1, 1], fn: heaviside },
   rect: { arity: [1, 1], fn: (t) => (Math.abs(t) <= 0.5 ? 1 : 0) },
   sinc: { arity: [1, 1], fn: (t) => (t === 0 ? 1 : Math.sin(Math.PI * t) / (Math.PI * t)) },
+  dirac: { arity: [1, 1], fn: () => 0 },
 }
 
 export const CONSTANTS: Record<string, number> = {

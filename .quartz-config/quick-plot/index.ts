@@ -15,8 +15,9 @@
 import type { Domain } from "./condition.ts"
 import { compile } from "./evaluate.ts"
 import { extract, ExtractError, OPEN_RANGE_WIDTH, type PlotSpec, type Series } from "./extract.ts"
+import { hasImpulse, placeImpulses, splitImpulses, type Impulse, type Split } from "./impulse.ts"
 import { pretty } from "./pretty.ts"
-import { robustSpread, sample, type Piece } from "./sample.ts"
+import { jumpDots, robustSpread, sample, type Piece } from "./sample.ts"
 import { DEFAULT_COLORS, DEFAULT_WIDTH, themeColors, type Color } from "./style.ts"
 import { renderSvg, type Marker } from "./svg.ts"
 import { DEFAULT_VIEW, renderSurfaceSvg, type Surface } from "./svg3d.ts"
@@ -37,7 +38,16 @@ export type PlotResult =
   | { ok: true; svg: string; notes: string[]; spec: PlotSpec }
   | { ok: false; message: string; line: number; detail?: { text: string; position: number } }
 
-export function renderPlot(source: string): PlotResult {
+export interface RenderOptions {
+  /**
+   * Colour curves for the system's light or dark setting when the page gives
+   * no theme of its own (default true). Quartz sites have no such fallback, a
+   * page without its theme script is light, so the Quartz build turns it off.
+   */
+  followSystemTheme?: boolean
+}
+
+export function renderPlot(source: string, options: RenderOptions = {}): PlotResult {
   let spec: PlotSpec
   try {
     spec = extract(source)
@@ -51,13 +61,20 @@ export function renderPlot(source: string): PlotResult {
   const x = spec.x ?? defaultRange(spec.series.map((s) => s.domain))
   const curves = []
   for (const series of spec.series) {
-    const f = compile(series.node)
+    // Impulses are drawn as arrows; the rest of the curve is sampled.
+    let split: Split
+    try {
+      split = splitImpulses(series.node)
+    } catch (e) {
+      return { ok: false, message: (e as Error).message, line: series.line }
+    }
+    const f = split.smooth ? compile(split.smooth) : () => NaN
     const scope = { ...spec.parameters }
     const at = (v: number) => {
       scope[spec.variable] = v
       return f(scope)
     }
-    const expression = pretty(series.node)
+    const expression = pretty(series.written)
     const label = (series.label ? `${series.label} = ${expression}` : expression) + (series.domain ? ` (${series.domain.text})` : "")
 
     // Draw only where the condition holds and the plot shows.
@@ -66,21 +83,29 @@ export function renderPlot(source: string): PlotResult {
     if (!(hi > lo)) {
       return { ok: false, message: `"${label}" lies outside the plotted range, ${x.min} to ${x.max}.`, line: series.line }
     }
-    const pieces = sample(at, lo, hi)
-    if (pieces.length === 0) {
-      return { ok: false, message: `"${label}" has no real values between ${lo} and ${hi}.`, line: series.line }
+    let impulses: Impulse[]
+    try {
+      impulses = placeImpulses(split.impulses, spec.variable, spec.parameters, lo, hi)
+    } catch (e) {
+      return { ok: false, message: (e as Error).message, line: series.line }
+    }
+    const pieces = split.smooth ? sample(at, lo, hi) : []
+    if (pieces.length === 0 && (split.smooth || impulses.length === 0)) {
+      const what = split.smooth ? "has no real values" : "has no impulses"
+      return { ok: false, message: `"${label}" ${what} between ${lo} and ${hi}.`, line: series.line }
     }
     curves.push({
       pieces,
+      impulses,
       label,
-      markers: endpointMarkers(series, pieces, x),
+      markers: pieces.length ? [...endpointMarkers(series, pieces, x), ...jumpDots(at, pieces, lo, hi)] : [],
       color: themeColors(colorFor(spec, curves.length), spec.exactColors),
       width: series.style?.width ?? spec.thickness ?? DEFAULT_WIDTH,
       dash: series.style?.dash ?? "solid",
     })
   }
 
-  const y = spec.y ?? autoRange(curves.flatMap((c) => c.pieces.flatMap((p) => p.map(([, y]) => y))))
+  const y = spec.y ?? withImpulses(autoRange(curves.flatMap((c) => c.pieces.flatMap((p) => p.map(([, y]) => y)))), curves.flatMap((c) => c.impulses))
   const svg = renderSvg(curves, {
     x,
     y,
@@ -90,6 +115,7 @@ export function renderPlot(source: string): PlotResult {
     grid: spec.grid,
     legend: spec.legend ?? true,
     id: hash(source),
+    followSystemTheme: options.followSystemTheme ?? true,
   })
   return { ok: true, svg, notes: spec.notes, spec }
 }
@@ -156,7 +182,8 @@ function renderSurfacePlot(spec: PlotSpec, variable2: string): PlotResult {
 
   const surfaces: Surface[] = []
   for (const series of spec.series) {
-    const expression = pretty(series.node)
+    if (hasImpulse(series.node)) return { ok: false, message: "Impulses can only be drawn in 2D plots.", line: series.line }
+    const expression = pretty(series.written)
     const conditions = [series.domain, series.domain2].filter((d) => d !== null).map((d) => d.text)
     const label = (series.label ? `${series.label} = ${expression}` : expression) + (conditions.length ? ` (${conditions.join(", ")})` : "")
 
@@ -230,6 +257,23 @@ function autoRange(ys: number[]) {
   if (max < 0 && max > 0.3 * min) max = 0
   const pad = 0.08 * (max - min)
   return { min: min - pad, max: max + pad, piTicks: false }
+}
+
+/**
+ * Widens a range to take in impulse arrows, which run from 0 to their weight.
+ * They're added after autoRange so a tall impulse isn't trimmed as an outlier.
+ */
+function withImpulses(range: { min: number; max: number; piTicks: boolean }, impulses: Impulse[]) {
+  if (impulses.length === 0) return range
+  const lo = Math.min(0, ...impulses.map((i) => i.weight))
+  const hi = Math.max(0, ...impulses.map((i) => i.weight))
+  // Nothing but impulses: autoRange had no values, so fit the arrows alone.
+  if (!Number.isFinite(range.min) || !Number.isFinite(range.max)) {
+    const pad = 0.12 * (hi - lo)
+    return { ...range, min: lo - pad, max: hi + pad }
+  }
+  const pad = 0.12 * (Math.max(hi, range.max) - Math.min(lo, range.min))
+  return { ...range, min: lo < range.min ? lo - pad : range.min, max: hi > range.max ? hi + pad : range.max }
 }
 
 // FNV-1a, for short ids that are the same every time a block is rendered.

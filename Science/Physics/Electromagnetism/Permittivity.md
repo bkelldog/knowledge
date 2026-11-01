@@ -1,0 +1,1 @@
+Permittivity is a measure of a material's ability to permit an electric field through it. Combined with [[Resistivity|resistivity]], [[Conductivity|conductivity]], and [[Susceptibility|susceptibility]], it gives a full picture of a material's behavior under electromagnetic fields and the motion of charges.

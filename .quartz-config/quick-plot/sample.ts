@@ -88,3 +88,61 @@ export function robustSpread(values: number[]): number {
   const q = (p: number) => sorted[Math.min(sorted.length - 1, Math.floor(p * (sorted.length - 1)))]
   return q(0.98) - q(0.02)
 }
+
+/** A dot on a curve: filled where the curve takes that value, hollow where it only comes close. */
+export interface Dot {
+  x: number
+  y: number
+  open: boolean
+}
+
+/**
+ * Dots where a curve jumps or has a hole, as a textbook draws them: u(t) gets
+ * a hollow dot at (0, 0) and a filled one at (0, 1), since u(0) = 1. Pieces
+ * from `sample` that meet at one x mark a jump or a single missing point.
+ */
+export function jumpDots(f: (x: number) => number, pieces: Piece[], min: number, max: number): Dot[] {
+  const dots: Dot[] = []
+  const gap = 1e-9 * (max - min)
+  // Landing exactly on a jump, as sgn x does at 0, finds it twice.
+  const add = (dot: Dot) => {
+    const same = dots.find((d) => d.x === dot.x && d.y === dot.y)
+    if (!same) dots.push(dot)
+    else if (!dot.open) same.open = false
+  }
+  for (let i = 0; i + 1 < pieces.length; i++) {
+    const [ax, ay] = pieces[i][pieces[i].length - 1]
+    const [bx, by] = pieces[i + 1][0]
+    if (bx - ax > gap || !Number.isFinite(ay) || !Number.isFinite(by)) continue
+    const x = simplest(ax, bx)
+    const value = f(x)
+    const close = (a: number, b: number) => Math.abs(a - b) <= 1e-6 * Math.max(1, Math.abs(a), Math.abs(b))
+    if (close(ay, by)) {
+      // The curve carries on through: a hole, or a single point off the curve.
+      if (!close(value, ay)) add({ x, y: ay, open: true })
+      if (Number.isFinite(value) && !close(value, ay)) add({ x, y: value, open: false })
+      continue
+    }
+    add({ x, y: ay, open: !close(value, ay) })
+    add({ x, y: by, open: !close(value, by) })
+    // A value on neither side, as sgn(0) = 0 is.
+    if (Number.isFinite(value) && !close(value, ay) && !close(value, by)) add({ x, y: value, open: false })
+  }
+  return dots
+}
+
+/**
+ * The simplest number in [a, b]: an integer, a short decimal, or a multiple of
+ * π, so a jump found by bisection near 0 is placed at exactly 0.
+ */
+export function simplest(a: number, b: number): number {
+  const mid = (a + b) / 2
+  for (let digits = 0; digits <= 12; digits++) {
+    const s = 10 ** digits
+    for (const unit of [1, Math.PI]) {
+      const c = (Math.round((mid / unit) * s) / s) * unit
+      if (c >= a && c <= b) return c + 0 // never -0
+    }
+  }
+  return mid
+}

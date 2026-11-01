@@ -16,6 +16,8 @@ export interface Marker {
 
 export interface Curve {
   pieces: Piece[]
+  /** Dirac impulses, drawn as arrows from 0 up (or down) to their weight. */
+  impulses: { x: number; weight: number }[]
   label: string
   markers: Marker[]
   color: { light: string; dark: string }
@@ -33,6 +35,8 @@ export interface Frame {
   legend: boolean
   /** Makes element ids unique when several plots share a page. */
   id: string
+  /** Use the system's dark setting when the page gives no theme. */
+  followSystemTheme: boolean
 }
 
 const WIDTH = 640
@@ -66,7 +70,7 @@ export function renderSvg(curves: Curve[], frame: Frame): string {
   const label = frame.title ?? curves.map((c) => c.label).join("; ")
   parts.push(
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${WIDTH} ${HEIGHT}" width="${WIDTH}" height="${HEIGHT}" role="img" aria-label="${esc(label)}" class="quick-plot-svg qp-${frame.id}" font-size="${FONT}">`,
-    `<style>${themeCss(`qp-${frame.id}`, curves.map((c) => c.color))}</style>`,
+    `<style>${themeCss(`qp-${frame.id}`, curves.map((c) => c.color), frame.followSystemTheme)}</style>`,
     `<defs><clipPath id="${clipId}"><rect x="${r(plot.x0)}" y="${r(plot.y0)}" width="${r(plot.x1 - plot.x0)}" height="${r(plot.y1 - plot.y0)}"/></clipPath></defs>`,
   )
 
@@ -108,6 +112,7 @@ export function renderSvg(curves: Curve[], frame: Frame): string {
       .map((piece) => piece.map(([x, y], j) => `${j ? "L" : "M"}${r(sx(x))} ${r(sy(clampY(y)))}`).join(""))
       .join("")
     if (d) parts.push(`<path class="qp-s${i}" color="${curve.color.light}" d="${d}" stroke="currentColor"${lineStyle(curve)}/>`)
+    if (curve.impulses.length) parts.push(impulseArrows(curve, i, sx, sy))
   })
   parts.push(`</g>`)
 
@@ -131,6 +136,26 @@ export function renderSvg(curves: Curve[], frame: Frame): string {
   parts.push(`</svg>`)
   return parts.join("")
 }
+
+// Arrows from 0 to each impulse's weight, as in a textbook, with the weight
+// written beside the head when it isn't 1.
+function impulseArrows(curve: Curve, index: number, sx: (x: number) => number, sy: (y: number) => number): string {
+  const head = 5 + 1.5 * curve.width
+  const shapes = curve.impulses.map(({ x, weight }) => {
+    const px = sx(x)
+    const base = sy(0)
+    const tip = sy(weight)
+    const dir = tip < base ? 1 : -1 // +1 when the arrow points up the page
+    const neck = tip + dir * Math.min(head * 1.6, Math.abs(base - tip))
+    const shaft = `<path d="M${r(px)} ${r(base)}V${r(neck)}" stroke="currentColor" stroke-width="${curve.width}" stroke-linecap="butt"/>`
+    const arrow = `<path d="M${r(px)} ${r(tip)}L${r(px - head)} ${r(neck)}L${r(px + head)} ${r(neck)}Z" fill="currentColor" stroke="none"/>`
+    const text = weight === 1 ? "" : `<text x="${r(px + head + 4)}" y="${r(tip + dir * FONT * 0.8)}" fill="currentColor" stroke="none">(${esc(formatWeight(weight))})</text>`
+    return shaft + arrow + text
+  })
+  return `<g class="qp-s${index}" color="${curve.color.light}">${shapes.join("")}</g>`
+}
+
+const formatWeight = (w: number) => String(Number(w.toPrecision(3))).replace("-", "−")
 
 function lineStyle(curve: Pick<Curve, "width" | "dash">): string {
   const w = curve.width
@@ -169,7 +194,9 @@ function legend(curves: Curve[], sx: (x: number) => number, sy: (y: number) => n
   const crowding = corners.map((c) => {
     let n = 0
     for (const curve of curves) {
-      for (const piece of curve.pieces) {
+      // An impulse arrow counts as points along its length.
+      const arrows = curve.impulses.map(({ x, weight }) => Array.from({ length: 21 }, (_, k): [number, number] => [x, (weight * k) / 20]))
+      for (const piece of [...curve.pieces, ...arrows]) {
         for (const [x, y] of piece) {
           const px = sx(x)
           const py = sy(y)

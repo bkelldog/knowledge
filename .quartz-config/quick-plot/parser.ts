@@ -9,6 +9,7 @@
 //   |x - 1|                  absolute value
 //   (x + 1                   missing closing parentheses are added at the end
 //   \omega t, x_0, V_{in}    Greek letters and subscripts name variables
+//   2 f(x)                   a function the plot block defines, like f(x) = x^2
 
 import type { Node } from "./ast.ts"
 import { CONSTANTS, FUNCTIONS, GREEK, KNOWN_NAMES } from "./builtins.ts"
@@ -34,7 +35,15 @@ interface Token {
   variable?: boolean
 }
 
-export function tokenize(input: string): Token[] {
+/**
+ * Functions defined in the plot block, like f(x) = x^2: name → number of
+ * arguments. The parser reads f(…) as a call to them; extract.ts fills in the body.
+ */
+export type DefinedFunctions = Record<string, number>
+
+export function tokenize(input: string, defined: DefinedFunctions = {}): Token[] {
+  // Defined names longer than a letter split runs like the built-in ones do.
+  const known = [...Object.keys(defined).filter((n) => n.length > 1), ...KNOWN_NAMES].sort((a, b) => b.length - a.length)
   const tokens: Token[] = []
   let i = 0
   let spaced = false
@@ -88,8 +97,8 @@ export function tokenize(input: string): Token[] {
       }
       while (j < run.length) {
         const rest = run.slice(j)
-        const known = KNOWN_NAMES.find((name) => rest.startsWith(name))
-        const take = known ?? (/^[a-zA-Z]/.test(rest) ? rest[0] : rest)
+        const name = known.find((n) => rest.startsWith(n))
+        const take = name ?? (/^[a-zA-Z]/.test(rest) ? rest[0] : rest)
         if (/^[0-9]$/.test(take)) push("number", take, i + j)
         else push("name", take, i + j)
         j += take.length
@@ -150,8 +159,8 @@ export interface ParseResult {
   notes: string[]
 }
 
-export function parse(input: string): ParseResult {
-  return new Parser(tokenize(input)).parseAll()
+export function parse(input: string, defined: DefinedFunctions = {}): ParseResult {
+  return new Parser(tokenize(input, defined), defined).parseAll()
 }
 
 class Parser {
@@ -160,9 +169,11 @@ class Parser {
   readonly notes: string[] = []
 
   private readonly tokens: Token[]
+  private readonly defined: DefinedFunctions
 
-  constructor(tokens: Token[]) {
+  constructor(tokens: Token[], defined: DefinedFunctions) {
     this.tokens = tokens
+    this.defined = defined
   }
 
   private peek(): Token {
@@ -316,6 +327,9 @@ class Parser {
     const t = this.next()
     const name = t.text
     if (t.variable) return { kind: "variable", name }
+    // Without parentheses a one-letter name stays a variable, so x(t) = cos t
+    // still leaves x free for other lines.
+    if (name in this.defined && (this.peek().type === "(" || name.length > 1)) return this.parseDefinedCall(t)
     if (name in CONSTANTS) return { kind: "constant", name }
     if (!isFunction(name)) {
       if (name.length === 1) return { kind: "variable", name }
@@ -344,13 +358,7 @@ class Parser {
 
     let args: Node[]
     if (this.peek().type === "(") {
-      const open = this.next()
-      args = this.peek().type === ")" ? [] : [this.parseSum()]
-      while (this.peek().type === ",") {
-        this.next()
-        args.push(this.parseSum())
-      }
-      this.close(open.position)
+      args = this.parseArguments()
     } else if (FUNCTIONS[callName].bare) {
       args = [this.parseBareArgument(t.position)]
     } else {
@@ -366,11 +374,33 @@ class Parser {
     return power ? { kind: "binary", op: "^", left: call, right: power } : call
   }
 
+  /** f(2x), for a function defined in the block. Its parentheses are required. */
+  private parseDefinedCall(t: Token): Node {
+    const name = t.text
+    if (this.peek().type !== "(") throw new ParseError(`${name} is a function, so it needs parentheses, like ${name}(x)`, t.position)
+    const args = this.parseArguments()
+    const want = this.defined[name]
+    if (args.length !== want) throw new ParseError(`${name} takes ${want} argument${want === 1 ? "" : "s"}`, t.position)
+    return { kind: "call", name, args, defined: true }
+  }
+
+  /** "(a, b, …)", at the current "(". */
+  private parseArguments(): Node[] {
+    const open = this.next()
+    const args = this.peek().type === ")" ? [] : [this.parseSum()]
+    while (this.peek().type === ",") {
+      this.next()
+      args.push(this.parseSum())
+    }
+    this.close(open.position)
+    return args
+  }
+
   // `sin 2x cos x`: the argument is the product up to the next function name.
   private parseBareArgument(at: number): Node {
     if (!this.startsFactor() && !this.isOp("-")) throw new ParseError("Missing the function's argument", at)
     let arg = this.isOp("-") ? (this.next(), { kind: "unary", op: "-", arg: this.parsePower() } as Node) : this.parsePower()
-    while (this.startsFactor() && !(this.peek().type === "name" && isFunction(this.peek().text))) {
+    while (this.startsFactor() && !(this.peek().type === "name" && (isFunction(this.peek().text) || this.peek().text in this.defined))) {
       arg = { kind: "binary", op: "*", left: arg, right: this.parsePower(), implicit: true }
     }
     return arg

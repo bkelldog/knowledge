@@ -7,7 +7,7 @@ f(t)*g(t)=\int_{-\infty}^{\infty}f(\tau)\>g(t-\tau)\>d\tau=\int_{-\infty}^{\inft
 $$
 where the convolution function is denoted by the star operator $*$;  on paper one would draw a star between $f$ and $g$. 
 
-It is also true that **convolution in the time domain is multiplication in the** [[Frequency Domain|frequency domain]].
+It is also true that **convolution in the time domain is multiplication in the** [[Manuscript/Knowledge/Engineering/Electrical Engineering/RF/Theory/Frequency Domain|frequency domain]].
 $$
 h(t)=f(t)*g(t) \Longleftrightarrow H(\omega)=F(\omega) \cdot G(\omega) \tag{2}
 $$

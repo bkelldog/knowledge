@@ -182,16 +182,16 @@ function fromHsl(h: number, s: number, l: number): string {
 /**
  * CSS that colours each series in light and dark mode. Rules are scoped to
  * one plot, and follow Obsidian's theme classes, Quartz's saved-theme
- * attribute, and otherwise the system setting.
+ * attribute, and otherwise the system setting if `followSystem`.
  */
-export function themeCss(plotClass: string, colors: { light: string; dark: string }[]): string {
+export function themeCss(plotClass: string, colors: { light: string; dark: string }[], followSystem = true): string {
   const rules = (pick: "light" | "dark", prefix: string) =>
     colors
       .map((c, i) => `${prefix.split(",").map((p) => `${p} .${plotClass} .qp-s${i}`.trim()).join(",")}{color:${c[pick]}}`)
       .join("")
   return (
     rules("light", "") +
-    `@media (prefers-color-scheme: dark){${rules("dark", "")}}` +
+    (followSystem ? `@media (prefers-color-scheme: dark){${rules("dark", "")}}` : "") +
     rules("dark", ".theme-dark,[saved-theme=dark]") +
     rules("light", ".theme-light,[saved-theme=light]")
   )
